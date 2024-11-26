@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 
 const generatePlayers = (array, input) => [...array].map(({name, id}) => {
-  if (window !== undefined) localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
+  if (typeof window !== 'undefined') localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
   return (
     <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
           <Image
@@ -28,7 +28,7 @@ function selectAll() {
 
 export default function Home() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
-const [players, setPlayers] = React.useState(window !== undefined ? JSON.parse(localStorage.getItem("RandomizerPlayers")) : [] || []);
+const [players, setPlayers] = React.useState(typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("RandomizerPlayers")) : [] || []);
 
 
 function randomize () {
