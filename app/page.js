@@ -132,7 +132,7 @@ function randomize () {
 }
 
   return (
-    <div className="bg-customgray w-11/12 min-h-screen h-2xl m-auto p-2">
+    <div className="bg-customgray w-11/12 max-w-screen-lg min-h-screen h-2xl m-auto p-5">
       <main>
         <h2 className="text-2xl mb-4">Team Randomizer</h2>
         <form>
