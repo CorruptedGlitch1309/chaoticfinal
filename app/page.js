@@ -2,134 +2,70 @@
 import Image from "next/image";
 import React from "react";
 
+const generatePlayers = (array, input) => [...array].map(({name, id}) => {
+  localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
+  return (
+    <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
+          <Image
+          src="/user.png"
+          height={50}
+          width={50}
+          alt=""
+          className="rounded-full mr-2"
+          />
+          <div className="flex justify-between w-8/12">
+            <label htmlFor={id} className="text-xl mt-3">{name}</label>
+            <input id={id} type="checkbox" value={id} className={"w-5 h-5 mt-3 ml-1 " + input ? "" : "hidden"} />
+          </div>
+      </div>
+  )
+});
 
-const players = [
-  {
-    name: "Casual",
-    image: "/casual.png",
-    skill: 3,
-  },
-  {
-    name: "Seven",
-    image: "/sector.png",
-    skill: 8,
-  },
-  {
-    name: "Alpha",
-    image: "/alpha.png",
-    skill: 3,
-  },
-  {
-    name: "Ace",
-    image: "/ace.png",
-    skill: 3,
-  },
-  {
-    name: "Echo",
-    image: "/echo.png",
-    skill: 2,
-  },
-  {
-    name: "Glitch",
-    image: "/glitch.png",
-    skill: 6,
-  },
-  {
-    name: "Kim",
-    image: "/kim.png",
-    skill: 5,
-  },
-  {
-    name: "One",
-    image: "/one.png",
-    skill: 10,
-  }
-]
-
-function generatePlayers (array, input) {
-  const html = [...array].map(({name, image}) => {
-    return (
-      <div className="flex bg-gray-600 w-44 rounded-full" key={name}>
-            <Image
-            src={image}
-            height={50}
-            width={50}
-            alt=""
-            className="rounded-full mr-2"
-            />
-            <div className="flex justify-between w-7/12">
-              <label htmlFor={name} className="text-2xl mt-2">{name}</label>
-              <input id={name} type="checkbox" value={name} className={"w-5 h-5 mt-3 ml-1 " + input ? "" : "hidden"} />
-            </div>
-        </div>
-    )
-  });
-  return html;
-}
+function selectAll() {
+  players.forEach(({id}) => document.getElementById(id).checked = document.getElementById("select-all").checked);
+};
 
 
 export default function Home() {
-const [team1, setTeam1] = React.useState((<div/>));
-const [team2, setTeam2] = React.useState((<div/>));
-const [team3, setTeam3] = React.useState((<div/>));
-const [team4, setTeam4] = React.useState((<div/>));
-const [teamNumber, setTeamNumber] = React.useState(0);
+const [teamState, setTeam] = React.useState([[], [], [], []]);
+const [players, setPlayers] = React.useState(JSON.parse(localStorage.getItem("RandomizerPlayers")) || []);
 
 
 function randomize () {
-  const currentPlayers = [...players].map(({name}) => {
-    if (document.getElementById(name).checked == true) {
-      return name;
-    };
-  }).filter((name) => name ? name : false);
+  const currentPlayers = [...players].map((object) => {
+    if (document.getElementById(object.id).checked == true) return object;
+  }).filter((player) => player);
+
+  const randomPlayers = generatePlayers(currentPlayers, false).sort(() => 0.5 - Math.random());
   const teamNumber = document.getElementById("teamQuantity").value;
-  console.log(teamNumber);
-  if (currentPlayers.length < teamNumber) {
-    alert("Not enough players!");
-    return;
-  }
 
-  const teams = [
-    [],
-    [],
-    [],
-    []
-  ]
+  if (currentPlayers.length < teamNumber) return alert("Not enough players!");
 
-  const randomPlayers = currentPlayers.sort(() => 0.5 - Math.random());
+ let teamHtml = [ [], [], [], [] ];
 
   let loops = 0;
   randomPlayers.forEach((player) => {
-    teams[loops].unshift(player);
+    teamHtml[loops].unshift(player);
     loops++;
-    if (loops == teamNumber) {
-      loops = 0;
-    };
+    if (loops == teamNumber) loops = 0;
   });
 
-  let teamHtml = [
-    [],
-    [],
-    [],
-    []
-  ]
+ teamHtml.forEach((team, index) => team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={index}>Team {index + 1}</h2> : "" ));
 
-  teams.forEach((team, index) => {
-    team.forEach((player) => {
-      players.forEach((object) => {
-        if (object.name == player) {
-          teamHtml[index].unshift(object);
-        };
-      });
-    });
-  });
-
-  setTeam1(generatePlayers(teamHtml[0], false));
-  setTeam2(generatePlayers(teamHtml[1], false));
-  setTeam3(generatePlayers(teamHtml[2], false));
-  setTeam4(generatePlayers(teamHtml[3], false));
-  setTeamNumber(teamNumber);
+  setTeam([ ...teamHtml ]);
 }
+
+function createPlayer (name) {
+  setPlayers([...players, {
+    name,
+    id: name.toLowerCase().replace(" ", "")
+  }]);
+  document.getElementById("new-player").value = "";
+};
+
+function deleteSelected() {
+  setPlayers(players.filter((player) => !document.getElementById(player.id).checked))
+};
 
   return (
     <div className="bg-customgray w-11/12 max-w-screen-lg min-h-screen h-2xl m-auto p-5">
@@ -143,30 +79,55 @@ function randomize () {
               <option value={3}>3</option>
               <option value={4}>4</option>
             </select>
-            <label htmlFor="skillcheck">Skill Check:</label>
-            <input className="w-4 h-4 mr-2" id="skillcheck" type="checkbox" name="skillcheck" disabled />
+            <label htmlFor="select-all">Select All:</label>
+            <input onChange={selectAll} className="w-4 h-4 mr-2" id="select-all" type="checkbox" name="select-all" />
             <button
-            className="bg-red-600 p-0.5 rounded"
+            className="bg-red-600 p-0.5 mr-2 rounded"
             onClick={(e) => {
               e.preventDefault();
               randomize();
             }}
             >Randomize</button>
+            <button
+            className="bg-red-600 p-0.5 rounded"
+            onClick={(e) => {
+              e.preventDefault();
+              deleteSelected();
+            }}
+            >Delete Selected</button>
           </div>
 
           <div className="bg-gray-500 p-3 mt-3 rounded-md flex flex-wrap gap-3">
             {generatePlayers(players, true)}
-            <hr className="mx-4 w-full"/>
-            <div id="teams" className="flex flex-wrap gap-3">
-              <h2 className={teamNumber >= 2 ? "text-2xl w-full" : "hidden"}>Team One</h2>
-              {team1}
-              <h2 className={"" + teamNumber >= 2 ? "text-2xl w-full" : "hidden"}>Team Two</h2>
-              {team2}
-              <h2 className={"" + teamNumber >= 3 ? "text-2xl w-full" : "hidden"}>Team Three</h2>
-              {team3}
-              <h2 className={"" + teamNumber >= 4 ? "text-2xl w-full" : "hidden"}>Team Four</h2>
-              {team4}
+
+            <div className="flex bg-gray-700 w-56 rounded-full">
+              <Image
+              src="/user.png"
+              height={50}
+              width={50}
+              alt=""
+              className="rounded-full mr-2"
+              />
+              <div className="flex justify-between w-8/12">
+                <input placeholder="New Player" id="new-player" type="text" className="w-10/12 h-full bg-gray-700 text-xl" />
+                <button
+                className="text-2xl bg-gray-300 rounded-full my-2 w-5 text-gray-600"
+                onClick={(e) => {
+                  e.preventDefault();
+                  createPlayer(document.getElementById("new-player").value);
+                }}>+</button>
+              </div>
             </div>
+
+            <hr className="mx-4 w-full"/>
+
+            <div id="teams" className="flex flex-wrap gap-3">
+              {teamState[0]}
+              {teamState[1]}
+              {teamState[2]}
+              {teamState[3]}
+            </div>
+
           </div>
         </form>
       </main>
