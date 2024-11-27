@@ -20,14 +20,10 @@ const [isStorageLoaded, setStorageLoaded] = React.useState(false);
 
 let storage = []
 React.useEffect(() => {
-  storage = JSON.parse(localStorage.getItem("RandomizerPlayers"));
-  setInterval(() => load(), 1000);
+  setInterval(setPlayers(JSON.parse(localStorage.getItem("RandomizerPlayers"))), 10);
+  setStorageLoaded(true)
 }, []);
 
-function load () {
-  setPlayers(storage);
-  setStorageLoaded(true);
-};
 
   return (
     <div className="bg-customgray w-11/12 max-w-screen-lg min-h-screen h-2xl m-auto p-5">
