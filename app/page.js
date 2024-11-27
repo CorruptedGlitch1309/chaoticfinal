@@ -9,7 +9,7 @@ import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/
 
 function getStorage() {
   if (typeof window !== 'undefined') {
-    return JSON.parse(localStorage.getItem("RandomizerPlayers"))
+    return JSON.parse(localStorage.getItem("RandomizerPlayers"));
   } else return [];
 }
 
@@ -43,7 +43,7 @@ React.useEffect(() => {
           </div>
 
           <div className="bg-gray-500 p-3 mt-3 rounded-md flex flex-wrap gap-3">
-            {loaded ? generatePlayers(players, true) : <h2 className="text-2xl">Loading</h2>}
+            {loaded ? generatePlayers(players, true) : <h2 className="text-2xl text-center w-full">Loading</h2>}
 
             <CreatePlayer onClick={(e) => {
                   e.preventDefault();
