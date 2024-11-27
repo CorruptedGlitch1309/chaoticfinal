@@ -18,7 +18,7 @@ const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState([]);
 
 React.useEffect(() => {
-  setPlayers(getStorage());
+  setPlayers([{name:"test", id:"test"}]);
 }, []);
 
   return (
