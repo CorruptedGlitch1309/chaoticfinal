@@ -7,18 +7,19 @@ import Buttons from "./ui/player_randomizer/buttons";
 import CreatePlayer from "./ui/player_randomizer/createplayer";
 import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/actions";
 
-function getStorage() {
+/*function getStorage() {
   if (typeof window !== 'undefined') {
     return JSON.parse(localStorage.getItem("RandomizerPlayers"))
   } else return [];
-}
+}*/
 
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState([]);
 
 React.useEffect(() => {
-  setPlayers(JSON.parse(localStorage.getItem("RandomizerPlayers")));
+  const storage = JSON.parse(localStorage.getItem("RandomizerPlayers"));
+  setPlayers(storage);
 }, []);
 
   return (
