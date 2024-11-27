@@ -22,7 +22,6 @@ let storage = []
 React.useEffect(() => {
   setInterval(() => {
     setPlayers(JSON.parse(localStorage.getItem("RandomizerPlayers")));
-    setStorageLoaded(true);
   }, 100);
 }, []);
 
