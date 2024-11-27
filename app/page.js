@@ -16,7 +16,7 @@ import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState([]);
-const [isStorageLoaded, setStorageLoaded] = React.useState(false);
+const [isStorageLoaded, setStorageLoaded] = React.useState(true);
 
 let storage = []
 React.useEffect(() => {
