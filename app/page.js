@@ -19,7 +19,6 @@ const [players, setPlayers] = React.useState([]);
 
 React.useEffect(() => {
   const storage = JSON.parse(localStorage.getItem("RandomizerPlayers"));
-  setPlayers(storage);
 }, []);
 
   return (
