@@ -16,11 +16,9 @@ import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState([]);
-const [isStorageLoaded, setStorageLoaded] = React.useState(true);
 
-let storage = []
 React.useEffect(() => {
-  setInterval(() => {
+  setTimeout(() => {
     setPlayers(JSON.parse(localStorage.getItem("RandomizerPlayers")));
   }, 100);
 }, []);
@@ -46,7 +44,7 @@ React.useEffect(() => {
           </div>
 
           <div className="bg-gray-500 p-3 mt-3 rounded-md flex flex-wrap gap-3">
-            {isStorageLoaded ? generatePlayers(players, true) : <h2 className="text-2xl">Loading</h2>}
+            {generatePlayers(players, true)}
 
             <CreatePlayer onClick={(e) => {
                   e.preventDefault();
