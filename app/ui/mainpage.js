@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import TeamNumberSelector from "./player_randomizer/teamnumber";
 import SelectAll from "./player_randomizer/selectall";
-import CreatePlayer from "./player_randomizer/CreatePlayer";
+import CreatePlayer from "./player_randomizer/createplayer";
 import Buttons from "./player_randomizer/buttons";
 
 const generatePlayers = (array, input) => [...array].map(({name, id}) => {
