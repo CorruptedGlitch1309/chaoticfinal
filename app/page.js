@@ -5,6 +5,7 @@ import TeamNumberSelector from "./ui/player_randomizer/teamnumber";
 import SelectAll from "./ui/player_randomizer/selectall";
 import Buttons from "./ui/player_randomizer/buttons";
 import CreatePlayer from "./ui/player_randomizer/createplayer";
+import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/actions";
 
 function getStorage() {
   if (typeof window !== 'undefined') {
@@ -12,72 +13,11 @@ function getStorage() {
   } else return [];
 }
 
-const generatePlayers = (array, input) => [...array].map(({name, id}) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
-  };
-  
-
-  return (
-    <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
-          <Image
-          src="/user.png"
-          height={50}
-          width={50}
-          alt=""
-          className="rounded-full mr-2"
-          />
-          <div className="flex justify-between w-8/12">
-            <label htmlFor={id} className="text-xl mt-3">{name}</label>
-            <input id={id} type="checkbox" value={id} className={"w-5 h-5 mt-3 ml-1 " + input ? "" : "hidden"} />
-          </div>
-      </div>
-  )
-});
-
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState(getStorage() || []);
 
 
-function randomize () {
-  const currentPlayers = [...players].map((object) => {
-    if (document.getElementById(object.id).checked == true) return object;
-  }).filter((player) => player);
-
-  const randomPlayers = generatePlayers(currentPlayers, false).sort(() => 0.5 - Math.random());
-  const teamNumber = document.getElementById("teamQuantity").value;
-
-  if (currentPlayers.length < teamNumber) return alert("Not enough players!");
-
- let teamHtml = [ [], [], [], [] ];
-
-  let loops = 0;
-  randomPlayers.forEach((player) => {
-    teamHtml[loops].unshift(player);
-    loops++;
-    if (loops == teamNumber) loops = 0;
-  });
-
- teamHtml.forEach((team, index) => team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={index}>Team {index + 1}</h2> : "" ));
-
-  setTeam([ ...teamHtml ]);
-}
-
-function createPlayer (name) {
-  if (name == "") return alert("Please enter a name.");
-  if (players.some((player) => player.name == name)) return alert("Player already exists.");
-  document.getElementById("new-player").value = "";
-
-  setPlayers([...players, {
-    name,
-    id: name.toLowerCase().replace(" ", "")
-  }]);
-};
-
-function deleteSelected() {
-  if (confirm("Are you sure? This cannot be undone.")) setPlayers(players.filter((player) => !document.getElementById(player.id).checked));
-};
 
   return (
     <div className="bg-customgray w-11/12 max-w-screen-lg min-h-screen h-2xl m-auto p-5">
@@ -90,11 +30,11 @@ function deleteSelected() {
             <Buttons
             randomAction={(e) => {
               e.preventDefault();
-              randomize();
+              setPlayers(randomize(players));
             }}
             deleteAction={(e) => {
               e.preventDefault();
-              deleteSelected();
+              setPlayers(deleteSelected(players));
             }} />
           </div>
 
@@ -103,8 +43,8 @@ function deleteSelected() {
 
             <CreatePlayer onClick={(e) => {
                   e.preventDefault();
-                  createPlayer(document.getElementById("new-player").value);
-                }} />
+                  setPlayers(createPlayer(document.getElementById("new-player").value, players));
+            }} />
 
             <hr className="mx-4 w-full"/>
 
