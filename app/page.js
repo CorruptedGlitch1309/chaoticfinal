@@ -21,7 +21,6 @@ const [isStorageLoaded, setStorageLoaded] = React.useState(false);
 let storage = []
 React.useEffect(() => {
   setInterval(setPlayers(JSON.parse(localStorage.getItem("RandomizerPlayers"))), 100);
-  setStorageLoaded(true)
 }, []);
 
 
