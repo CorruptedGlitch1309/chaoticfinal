@@ -8,16 +8,16 @@ import CreatePlayer from "./ui/player_randomizer/createplayer";
 import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/actions";
 
 function getStorage() {
-  if (typeof window !== 'undefined') {
     return JSON.parse(localStorage.getItem("RandomizerPlayers"))
-  } else return [];
 }
 
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
-const [players, setPlayers] = React.useState(getStorage() || []);
+const [players, setPlayers] = React.useState([]);
 
-
+React.useEffect(() => {
+  setPlayers(getStorage());
+}, []);
 
   return (
     <div className="bg-customgray w-11/12 max-w-screen-lg min-h-screen h-2xl m-auto p-5">
