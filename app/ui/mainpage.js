@@ -21,11 +21,6 @@ const generatePlayers = (array, input) => [...array].map(({name, id}) => {
   )
 });
 
-function selectAll() {
-  players.forEach(({id}) => document.getElementById(id).checked = document.getElementById("select-all").checked);
-};
-
-
 export default function MainPage() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState(JSON.parse(localStorage.getItem("RandomizerPlayers")) || []);
@@ -54,6 +49,10 @@ function randomize () {
 
   setTeam([ ...teamHtml ]);
 }
+
+function selectAll() {
+  players.forEach(({id}) => document.getElementById(id).checked = document.getElementById("select-all").checked);
+};
 
 function createPlayer (name) {
   if (name == "") return alert("Please enter a name.");
