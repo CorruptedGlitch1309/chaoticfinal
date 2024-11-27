@@ -15,11 +15,7 @@ function getStorage() {
 
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
-const [players, setPlayers] = React.useState([]);
-
-React.useLayoutEffect(() => {
-  setPlayers(getStorage());
-}, []);
+const [players, setPlayers] = React.useState(getStorage() || []);
 
 
   return (
