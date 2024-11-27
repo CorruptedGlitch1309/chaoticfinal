@@ -17,10 +17,8 @@ export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState([]);
 
-React.useEffect(() => {
-  setTimeout(() => {
-    setPlayers(getStorage());
-  }, 100);
+React.useLayoutEffect(() => {
+  setPlayers(getStorage());
 }, []);
 
 
