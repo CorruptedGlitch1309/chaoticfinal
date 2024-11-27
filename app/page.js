@@ -8,7 +8,9 @@ import CreatePlayer from "./ui/player_randomizer/createplayer";
 import { deleteSelected, createPlayer, randomize, generatePlayers } from "./lib/actions";
 
 function getStorage() {
+  if (typeof window !== 'undefined') {
     return JSON.parse(localStorage.getItem("RandomizerPlayers"))
+  } else return [];
 }
 
 export default function page() {
