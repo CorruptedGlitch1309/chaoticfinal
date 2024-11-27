@@ -16,6 +16,11 @@ function getStorage() {
 export default function page() {
 const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState(getStorage() || []);
+const [loaded, setLoaded] = React.useState(false);
+
+React.useEffect(() => {
+  setLoaded(true);
+}, [])
 
 
   return (
@@ -38,7 +43,7 @@ const [players, setPlayers] = React.useState(getStorage() || []);
           </div>
 
           <div className="bg-gray-500 p-3 mt-3 rounded-md flex flex-wrap gap-3">
-            {generatePlayers(players, true)}
+            {loaded ? generatePlayers(players, true) : <h2 className="text-2xl">Loading</h2>}
 
             <CreatePlayer onClick={(e) => {
                   e.preventDefault();
