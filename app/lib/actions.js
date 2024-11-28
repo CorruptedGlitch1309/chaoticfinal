@@ -1,13 +1,32 @@
 import Image from "next/image";
 
+function setStorage(array) {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
+  };
+};
+
+export function getStorage() {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem("RandomizerPlayers"));
+  } else return [];
+};
+
 export function deleteSelected(players) {
     if (confirm("Are you sure? This cannot be undone.")) return players.filter((player) => !document.getElementById(player.id).checked);
+    setStorage(players);
     return players;
 };
 
 export function createPlayer (name, players) {
-    if (name == "") return alert("Please enter a name.");
-    if (players.some((player) => player.name == name)) return alert("Player already exists.");
+    if (name == "") {
+      alert("Please enter a name.");
+      return players;
+    };
+    if (players.some((player) => player.id == name.toLowerCase().replace(" ", ""))) {
+      alert("Player already exists.");
+      return players;
+    };
     document.getElementById("new-player").value = "";
   
     return [...players, {
@@ -24,7 +43,10 @@ export function createPlayer (name, players) {
     const randomPlayers = generatePlayers(currentPlayers, false).sort(() => 0.5 - Math.random());
     const teamNumber = document.getElementById("teamQuantity").value;
   
-    if (currentPlayers.length < teamNumber) return alert("Not enough players!");
+    if (currentPlayers.length < teamNumber) {
+      alert("Not enough players!");
+      return [];
+    };
   
    let teamHtml = [ [], [], [], [] ];
   
@@ -36,15 +58,9 @@ export function createPlayer (name, players) {
     });
   
    teamHtml.forEach((team, index) => team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={index}>Team {index + 1}</h2> : "" ));
-  
+
     return [ ...teamHtml ];
   };
-
-function setStorage(array) {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
-    };
-  }
 
   export const generatePlayers = (array, input) => [...array].map(({name, id}) => {
     setStorage(array);
