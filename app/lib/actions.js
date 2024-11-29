@@ -70,7 +70,7 @@ export function createPlayer (name, players) {
             />
             <div className="flex justify-between w-8/12">
               <label htmlFor={id} className="text-xl mt-3">{name}</label>
-              <input id={id} type="checkbox" value={id} className={"w-5 h-5 mt-3 ml-1 " + input ? "" : "hidden"} />
+              {input ? <input id={id} type="checkbox" value={id} className="w-3 h-3 mt-5 ml-1"/> : <></>}
             </div>
         </div>
     )
