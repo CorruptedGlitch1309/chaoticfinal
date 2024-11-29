@@ -35,35 +35,29 @@ export function createPlayer (name, players) {
       }]
   };
 
-  export function randomize (players) {
-    const currentPlayers = [...players].map((object) => {
+  export function getSelected (players) {
+    return [...players].map((object) => {
       if (document.getElementById(object.id).checked == true) return object;
     }).filter((player) => player);
-  
-    const randomPlayers = generatePlayers(currentPlayers, false).sort(() => 0.5 - Math.random());
-    const teamNumber = document.getElementById("teamQuantity").value;
-  
-    if (currentPlayers.length < teamNumber) {
-      alert("Not enough players!");
-      return [];
-    };
-  
-   let teamHtml = [ [], [], [], [] ];
-  
+  };
+
+  export function randomize (players, teamNumber) {
+    const randomized = players.sort(() => 0.5 - Math.random());
+
+    const teams = [ [], [], [], [] ]
+
     let loops = 0;
-    randomPlayers.forEach((player) => {
-      teamHtml[loops].unshift(player);
+    randomized.forEach((player) => {
+      teams[loops].unshift(player);
       loops++;
       if (loops == teamNumber) loops = 0;
     });
-  
-   teamHtml.forEach((team, index) => team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={index}>Team {index + 1}</h2> : "" ));
 
-    return [ ...teamHtml ];
+    return teams;
   };
 
-  export const generatePlayers = (array, input) => [...array].map(({name, id}) => {
-    setStorage(array);
+  export const generatePlayers = (players, array, input) => [...array].map(({name, id}) => {
+    setStorage(players);
 
     return (
       <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
@@ -81,3 +75,16 @@ export function createPlayer (name, players) {
         </div>
     )
   });
+
+  export function playerRoute(players, teamNumber, searchParams) {
+    const params = new URLSearchParams(searchParams.toString);
+    params.set("selected", JSON.stringify(players));
+    params.set("teamNumber", JSON.stringify(teamNumber));
+    params.set("info", "true");
+    return params.toString();
+  };
+
+  export function addTeamName (team, index) {
+    team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={index}>Team {index + 1}</h2> : "" );
+    return team;
+  }
