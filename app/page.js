@@ -9,7 +9,6 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 
 export default function page() {
-const [teamState, setTeam] = React.useState([[], [], [], []]);
 const [players, setPlayers] = React.useState(getStorage() || []);
 const [loaded, setLoaded] = React.useState(false);
 const [selectedParams, setSelectedParams] = React.useState([]);
@@ -21,10 +20,6 @@ const pathname = usePathname();
 function getSelectedParams () {
   return JSON.parse(searchParams.get("selected") ? searchParams.get("selected") : "[]");
 };
-
-function getInfoParams () {
-  return JSON.parse(searchParams.get("info"));
-}
 
 React.useEffect(() => {
   setLoaded(true);
@@ -44,7 +39,7 @@ React.useEffect(() => {
             randomAction={(e) => {
               e.preventDefault();
               const randomized = randomize(getSelected(players), document.getElementById("teamQuantity").value);
-              router.push(pathname + '?' + playerRoute(randomized, document.getElementById("teamQuantity").value, searchParams));
+              router.push(getSelected(players).length > 0 ? pathname + '?' + playerRoute(randomized, document.getElementById("teamQuantity").value, searchParams) : pathname);
               setSelectedParams(randomized);
             }}
             deleteAction={(e) => {

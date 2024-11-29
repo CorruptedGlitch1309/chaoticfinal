@@ -79,8 +79,6 @@ export function createPlayer (name, players) {
   export function playerRoute(players, teamNumber, searchParams) {
     const params = new URLSearchParams(searchParams.toString);
     params.set("selected", JSON.stringify(players));
-    params.set("teamNumber", JSON.stringify(teamNumber));
-    params.set("info", "true");
     return params.toString();
   };
 
