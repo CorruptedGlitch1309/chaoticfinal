@@ -12,7 +12,7 @@ export default function CreatePlayer (props) {
               className="rounded-full mr-2"
               />
               <div className="flex justify-between w-8/12">
-                <input placeholder="New Player" id="new-player" type="text" className="w-10/12 h-full bg-gray-700 text-xl"
+                <input placeholder="New Player" type="text" className="create-player w-10/12 h-full bg-gray-700 text-xl"
                 />
                 <button
                 className="text-2xl bg-gray-300 rounded-full my-2 w-5 text-gray-600"

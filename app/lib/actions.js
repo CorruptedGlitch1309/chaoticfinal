@@ -1,4 +1,5 @@
 import Image from "next/image";
+import CreatePlayer from "../ui/player_randomizer/createplayer";
 
 function setStorage(array) {
   if (typeof window !== 'undefined') {
@@ -13,52 +14,62 @@ export function getStorage() {
 };
 
 export function deleteSelected(players) {
-    if (confirm("Are you sure? This cannot be undone.")) return players.filter((player) => !document.getElementById(player.id).checked);
-    setStorage(players);
+    if (confirm("Are you sure? This cannot be undone.")) {
+      const deletedPlayers = players.filter((player) => !document.getElementById(player.id).checked)
+      setStorage(deletedPlayers);
+      if (deletedPlayers.length === 0) document.getElementById("select-all").checked = false;
+      return deletedPlayers;
+    };
     return players;
 };
 
-export function createPlayer (name, players) {
+export function createPlayer (button, players, newPlayers, key) {
+  const input = button.parentElement.querySelector(".create-player");
+  const name = input.value;
     if (name == "") {
       alert("Please enter a name.");
-      return players;
+      return { stateNewPlayers: newPlayers, statePlayers: players};
     };
     if (players.some((player) => player.id == name.toLowerCase().replace(" ", ""))) {
       alert("Player already exists.");
-      return players;
+      return { stateNewPlayers: newPlayers, statePlayers: players};
     };
-    document.getElementById("new-player").value = "";
   
-    return [...players, {
+    return {
+      stateNewPlayers: newPlayers.filter((player) => player != key),
+      statePlayers: [...players, {
         name,
         id: name.toLowerCase().replace(" ", "")
       }]
-  };
+    }
+};
 
-  export function getSelected (players) {
+export function getSelected (players) {
     return [...players].map((object) => {
       if (document.getElementById(object.id).checked == true) return object;
     }).filter((player) => player);
-  };
+};
 
-  export function randomize (players, teamNumber) {
-    const randomized = players.sort(() => 0.5 - Math.random());
+export function randomize (players, teamNumber) {
+  const randomized = players.sort(() => 0.5 - Math.random());
 
-    const teams = [ [], [], [], [] ]
+  const teams = [ [], [], [], [] ]
 
-    let loops = 0;
-    randomized.forEach((player) => {
-      teams[loops].unshift(player);
-      loops++;
-      if (loops == teamNumber) loops = 0;
-    });
+  let loops = 0;
+  randomized.forEach((player) => {
+    teams[loops].unshift(player);
+    loops++;
+    if (loops == teamNumber) loops = 0;
+  });
 
-    return teams;
-  };
+  return teams;
+};
 
-  export const generatePlayers = (players, array, input) => [...array].map(({name, id}) => {
-    setStorage(players);
-
+export const generatePlayers = (players, array, input) => {
+  if (array == {}) return array;
+  setStorage(players);
+  return [...array].map(({name, id}) => {
+  
     return (
       <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
             <Image
@@ -74,15 +85,21 @@ export function createPlayer (name, players) {
             </div>
         </div>
     )
-  });
+  })
+};
 
-  export function playerRoute(players, teamNumber, searchParams) {
-    const params = new URLSearchParams(searchParams.toString);
-    params.set("selected", JSON.stringify(players));
-    return params.toString();
-  };
+export function playerRoute(players, teamNumber, searchParams) {
+  const params = new URLSearchParams(searchParams.toString);
+  params.set("selected", JSON.stringify(players));
+  return params.toString();
+};
 
-  export function addTeamName (team, index) {
-    team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={index}>Team {index + 1}</h2> : "" );
-    return team;
-  }
+export function addTeamName (team, index) {
+  team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={"team-name" + index}>Team {index + 1}</h2> : "" );
+  return team;
+}
+
+export function createBlankPlayer (newPlayers) {
+  const key = new Date().getTime().toString()
+  return [...newPlayers, key]
+}

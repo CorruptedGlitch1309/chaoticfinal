@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "./ui/nav";
 import { Suspense } from "react";
+import StoreProvider from "./StoreProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,7 +23,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
 
   return (
-    <html lang="en">
+    <StoreProvider>
+      <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
@@ -32,5 +34,6 @@ export default function RootLayout({ children }) {
         </Suspense>
       </body>
     </html>
+    </StoreProvider>
   );
 }

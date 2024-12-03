@@ -8,9 +8,13 @@ export default function Buttons (props) {
                 onClick={props.randomAction}
                 >Randomize</button>
             <button
-                className="bg-red-600 p-0.5 rounded"
+                className="bg-red-600 p-0.5 mr-2 rounded"
                 onClick={props.deleteAction}
                 >Delete Selected</button>
+            <button
+                className="bg-red-600 p-0.5 rounded"
+                onClick={props.createAction}
+                >Add Player</button>
         </>
     )
 }
