@@ -3,19 +3,19 @@ import CreatePlayer from "../ui/player_randomizer/createplayer";
 
 function setStorage(array) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem("RandomizerPlayers", JSON.stringify(array));
+    localStorage.setItem("RandomizerPlayers2", JSON.stringify(array));
   };
 };
 
 export function getStorage() {
   if (typeof window !== 'undefined') {
-    return JSON.parse(localStorage.getItem("RandomizerPlayers"));
+    return JSON.parse(localStorage.getItem("RandomizerPlayers2"));
   } else return [];
 };
 
 export function deleteSelected(players) {
     if (confirm("Are you sure? This cannot be undone.")) {
-      const deletedPlayers = players.filter((player) => !document.getElementById(player.id).checked)
+      const deletedPlayers = players.filter((player) => !document.getElementById(player.toLowerCase().replace(" ", "")).checked)
       setStorage(deletedPlayers);
       if (deletedPlayers.length === 0) document.getElementById("select-all").checked = false;
       return deletedPlayers;
@@ -30,23 +30,20 @@ export function createPlayer (button, players, newPlayers, key) {
       alert("Please enter a name.");
       return { stateNewPlayers: newPlayers, statePlayers: players};
     };
-    if (players.some((player) => player.id == name.toLowerCase().replace(" ", ""))) {
+    if (players.some((player) => player == name)) {
       alert("Player already exists.");
       return { stateNewPlayers: newPlayers, statePlayers: players};
     };
   
     return {
       stateNewPlayers: newPlayers.filter((player) => player != key),
-      statePlayers: [...players, {
-        name,
-        id: name.toLowerCase().replace(" ", "")
-      }]
+      statePlayers: [...players, name]
     }
 };
 
 export function getSelected (players) {
     return [...players].map((object) => {
-      if (document.getElementById(object.id).checked == true) return object;
+      if (document.getElementById(object.toLowerCase().replace(" ", "")).checked == true) return object;
     }).filter((player) => player);
 };
 
@@ -68,7 +65,8 @@ export function randomize (players, teamNumber) {
 export const generatePlayers = (players, array, input) => {
   if (array == {}) return array;
   setStorage(players);
-  return [...array].map(({name, id}) => {
+  return [...array].map((name) => {
+    const id = name.toLowerCase().replace(" ", "");
   
     return (
       <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
