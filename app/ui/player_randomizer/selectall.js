@@ -2,7 +2,7 @@
 
 export default function SelectAll (props) {
     function selectAll(players) {
-        players.forEach(({id}) => document.getElementById(id).checked = document.getElementById("select-all").checked);
+        players.forEach((name) => document.getElementById(name.toLowerCase().replace(" ", "")).checked = document.getElementById("select-all").checked);
     };
 
     return (
