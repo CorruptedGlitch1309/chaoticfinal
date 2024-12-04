@@ -1,9 +1,20 @@
 
 
 export default function SelectAll (props) {
-    function selectAll(players) {
-        players.forEach((name) => document.getElementById(name.toLowerCase().replace(" ", "")).checked = document.getElementById("select-all").checked);
-    };
+    const select = [ "selected", "bg-gray-400" ];
+    const unselect = [ "unselect", "bg-gray-600" ];
+
+
+
+    const selectAll = (players) => players.forEach((name) => {
+        const element = document.getElementById(name.toLowerCase().replace(" ", ""));
+        const isSelected = document.getElementById("select-all").checked;
+
+        (isSelected ? select : unselect).forEach((text) => element.classList.add(text));
+        (!isSelected ? select : unselect).forEach((text) => element.classList.remove(text));
+    });
+
+    
 
     return (
         <>

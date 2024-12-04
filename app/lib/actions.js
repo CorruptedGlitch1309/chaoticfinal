@@ -41,11 +41,7 @@ export function createPlayer (button, players, newPlayers, key) {
     }
 };
 
-export function getSelected (players) {
-    return [...players].map((object) => {
-      if (document.getElementById(object.toLowerCase().replace(" ", "")).checked == true) return object;
-    }).filter((player) => player);
-};
+export const getSelected = (players) => [...document.querySelectorAll(".selected")].map((element) => element.lastChild.textContent);
 
 export function randomize (players, teamNumber) {
   const randomized = players.sort(() => 0.5 - Math.random());
@@ -63,27 +59,49 @@ export function randomize (players, teamNumber) {
 };
 
 export const generatePlayers = (players, array, input) => {
-  if (array == {}) return array;
   setStorage(players);
-  return [...array].map((name) => {
-    const id = name.toLowerCase().replace(" ", "");
-  
-    return (
-      <div className="flex bg-gray-600 w-56 rounded-full" key={id}>
-            <Image
+
+  function select(button) {
+    const testFor = (target, text) => target.classList.value.includes(text);
+    const target = testFor(button, "player-button") ? button : button.parentElement;
+    if (!testFor(target, "player-button")) return;
+    const select = [ "selected", "bg-gray-400" ];
+    const unselect = [ "unselect", "bg-gray-600" ];
+    const isSelected = testFor(target, "selected");
+
+    (!isSelected ? select : unselect).forEach((text) => target.classList.add(text));
+    (isSelected ? select : unselect).forEach((text) => target.classList.remove(text));
+  }
+
+  const html = (name) => <>
+          <Image
             src="/user.png"
             height={50}
             width={50}
             alt=""
             className="rounded-full mr-2"
-            />
-            <div className="flex justify-between w-8/12">
-              <label htmlFor={id} className="text-xl mt-3">{name}</label>
-              {input ? <input id={id} type="checkbox" value={id} className="w-3 h-3 mt-5 ml-1"/> : <></>}
-            </div>
-        </div>
+          />
+          <div className="flex justify-between w-8/12 text-xl mt-3">{name}</div>
+  </>
+
+  return [...array].map((name) => {
+    const id = name.toLowerCase().replace(" ", "");
+  
+    return input ? (
+      <button
+      className="flex bg-gray-600 w-56 rounded-full player-button unselect"
+      key={id}
+      id={id}
+      onClick={(e) => select(e.target)}
+      >{html(name)}</button>
     )
-  })
+    : (
+      <div
+      className="flex bg-gray-600 w-56 rounded-full player-button unselect"
+      key={id}
+      >{html(name)}</div>
+    );
+  });
 };
 
 export function playerRoute(players, teamNumber, searchParams) {
