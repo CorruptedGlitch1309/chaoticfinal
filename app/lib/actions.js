@@ -1,5 +1,6 @@
 import Image from "next/image";
 import CreatePlayer from "../ui/player_randomizer/createplayer";
+import { useDispatch } from "react-redux";
 
 function setStorage(array) {
   if (typeof window !== 'undefined') {
@@ -15,7 +16,7 @@ export function getStorage() {
 
 export function deleteSelected(players) {
     if (confirm("Are you sure? This cannot be undone.")) {
-      const deletedPlayers = players.filter((player) => !document.getElementById(player.toLowerCase().replace(" ", "")).checked)
+      const deletedPlayers = players.filter((player) => !document.getElementById(player.toLowerCase().replace(" ", "")).classList.value.includes("selected"))
       setStorage(deletedPlayers);
       if (deletedPlayers.length === 0) document.getElementById("select-all").checked = false;
       return deletedPlayers;
