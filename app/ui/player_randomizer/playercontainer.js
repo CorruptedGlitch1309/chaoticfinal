@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { generatePlayers, createPlayer, addTeamName } from "@/app/lib/actions";
 import { setNewPlayers, setPlayers } from "@/app/lib/redux/hooks";
+import CreatePlayer from "./createplayer";
 
 export default function PlayerContainer () {
     const dispatch = useDispatch();
