@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
     <StoreProvider>
       <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Nav />
         <Suspense>

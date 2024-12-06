@@ -21,7 +21,7 @@ React.useEffect(() => {
     <div>
       <div className="bg-customgray w-11/12 max-w-screen-lg min-h-screen h-2xl m-auto p-5">
       <main>
-        <h2 className="text-2xl mb-4">Team Randomizer</h2>
+        <h2 className="text-2xl mb-3">Player List</h2>
         <div>
           <Inputs />
           <PlayerContainer />

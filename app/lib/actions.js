@@ -1,6 +1,9 @@
 import Image from "next/image";
 import CreatePlayer from "../ui/player_randomizer/createplayer";
+import TeamControls from "../ui/player_randomizer/teamcontrols";
+import FinalsControls from "../ui/finals-loadout/finalscontrols";
 import { useDispatch } from "react-redux";
+import { setNewPlayers } from "./redux/hooks";
 
 function setStorage(array) {
   if (typeof window !== 'undefined') {
@@ -21,6 +24,7 @@ export function deleteSelected(players) {
       if (deletedPlayers.length === 0) document.getElementById("select-all").checked = false;
       return deletedPlayers;
     };
+
     return players;
 };
 
@@ -44,7 +48,7 @@ export function createPlayer (button, players, newPlayers, key) {
 
 export const getSelected = (players) => [...document.querySelectorAll(".selected")].map((element) => element.lastChild.textContent);
 
-export function randomize (players, teamNumber) {
+export function randomizeTeams (players, teamNumber) {
   const randomized = players.sort(() => 0.5 - Math.random());
 
   const teams = [ [], [], [], [] ]
@@ -119,4 +123,15 @@ export function addTeamName (team, index) {
 export function createBlankPlayer (newPlayers) {
   const key = new Date().getTime().toString()
   return [...newPlayers, key]
+}
+
+export function generateControls (state) {
+  switch (state) {
+    case "team-randomizer":
+      return (<TeamControls />);
+      break;
+    case "finals-loadout":
+      return (<FinalsControls />);
+      break;
+  }
 }
