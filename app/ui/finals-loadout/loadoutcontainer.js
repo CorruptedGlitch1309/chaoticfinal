@@ -6,7 +6,7 @@ export default function LoadoutContainer () {
     const loadouts = useSelector((state) => state.loadouts);
 
     return (
-        <div id="loadouts" className="flex flex-wrap gap-3">
+        <div id="loadouts" className="w-full flex flex-wrap gap-y-5">
               {loadoutCards(loadouts)}
         </div>
     )

@@ -35,9 +35,11 @@ export function setType (payload) {
     };
 };
 
-export function setClassToggle (payload) {
+export function setClassToggle (value, sub, payload) {
     return {
         type: TOGGLECLASS,
+        value,
+        sub,
         payload
     };
 };

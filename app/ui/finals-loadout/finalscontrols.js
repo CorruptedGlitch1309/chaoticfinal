@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import WeaponList from "./weaponlist";
+import GameClassList from "./weaponlist";
 
 export default function FinalsControls () {
     const dispatch = useDispatch();
@@ -16,9 +16,9 @@ export default function FinalsControls () {
                 <input id="heavy-checkbox" type="checkbox" className="mr-4" defaultChecked />
             </div>
 
-            <WeaponList gameClass={"light"} />
-            <WeaponList gameClass={"medium"} />
-            <WeaponList gameClass={"heavy"} />
+            <GameClassList gameClass={"light"} />
+            <GameClassList gameClass={"medium"} />
+            <GameClassList gameClass={"heavy"} />
 
         </div>
     )

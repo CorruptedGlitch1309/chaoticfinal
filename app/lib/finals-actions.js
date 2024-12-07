@@ -5,6 +5,14 @@ const gameClasses = [
     "light",
     "medium",
     "heavy"
+];
+
+const universalGadgets = [
+    "Flashbang",
+    "Frag_Grenade",
+    "Gas_Grenade",
+    "Goo_Grenade",
+    "Pyro_Grenade",
 ]
 
 export const lightWeapons = [
@@ -22,6 +30,23 @@ export const lightWeapons = [
     "XP-54",
 ];
 
+export const lightGadgets = [
+    "Breach_Charge",
+    "Gateway",
+    "Glitch_Grenade",
+    "Smoke_Grenade",
+    "Thermal_Vision",
+    "Tracking_Dart",
+    "Vanishing_Bomb",
+    ...universalGadgets
+];
+
+export const lightSpecializations = [
+    "Cloaking_Device",
+    "Evasive_Dash",
+    "Gappling_Hook",
+]
+
 export const mediumWeapons = [
     "AKM",
     "CL-40",
@@ -33,6 +58,23 @@ export const mediumWeapons = [
     "R.357",
     "Riot_Shield",
 ];
+
+export const mediumGadgets = [
+    "APS_Turret",
+    "Defibrillator",
+    "Explosive_Mine",
+    "Gas_Mine",
+    "Glitch_Trap",
+    "Jump_Pad",
+    "Zipline",
+    ...universalGadgets
+];
+
+export const mediumSpecializations = [
+    "Dematerializer",
+    "Guardian_Turret",
+    "Healing_Beam",
+]
 
 export const heavyWeapons = [
     "50_Akimbo",
@@ -46,8 +88,26 @@ export const heavyWeapons = [
     "Spear",
 ];
 
-export function generateWeapons (weapons, gameClass) {
+export const heavyGadgets = [
+    "Anti-Gravity_Cube",
+    "Barricade",
+    "C4",
+    "Dome_Shield",
+    "Explosive_Mine",
+    "Motion_Sensor",
+    "Pyro_Mine",
+    "RPG-7",
+    ...universalGadgets
+];
 
+export const heavySpecializations = [
+    "Charge_N_Slam",
+    "Goo_Gun",
+    "Mesh_Shield",
+    "Winch_Claw",
+];
+
+export function generateWeapons (weapons, gameClass, type) {
     function select(button) {
         const testFor = (target, text) => target.classList.value.includes(text);
         const target = testFor(button, "weapon-button") ? button : button.parentElement;
@@ -58,6 +118,12 @@ export function generateWeapons (weapons, gameClass) {
     
         (!isSelected ? select : unselect).forEach((text) => target.classList.add(text));
         (isSelected ? select : unselect).forEach((text) => target.classList.remove(text));
+      }
+
+      function getURLPiece (type) {
+        if (type == "gadgets") return "gadgets/";
+        if (type == "specs") return "specializations/";
+        return "";
       }
 
     return [...weapons].map((weapon) => (
@@ -73,7 +139,7 @@ export function generateWeapons (weapons, gameClass) {
             <Image
             height={300}
             width={300}
-            src={`/${gameClass}/${weapon}.png`}
+            src={`/${gameClass}/${getURLPiece(type)}${weapon}.png`}
             alt=""
             className="rounded-t-md relative"
           />
@@ -101,59 +167,142 @@ export function randomizeLoadout () {
         ).filter((item) => item)
     };
 
+    function getSelectedGadgets (type) {
+        return [...document.getElementById(`gadgets-container-${type}`).children].map(
+            (element) => element.classList.value.includes("weapon-selected") ? element.id : false
+        ).filter((item) => item)
+    };
+
+    function getSelectedSpecs (type) {
+        return [...document.getElementById(`specs-container-${type}`).children].map(
+            (element) => element.classList.value.includes("weapon-selected") ? element.id : false
+        ).filter((item) => item)
+    };
+
     const listOfClasses = getClasses();
 
-    const lightSelected = getSelectedWeapons("light");
-    const mediumSelected = getSelectedWeapons("medium");
-    const heavySelected = getSelectedWeapons("heavy");
+    const lightSelectedWeapons = getSelectedWeapons("light");
+    const mediumSelectedWeapons = getSelectedWeapons("medium");
+    const heavySelectedWeapons = getSelectedWeapons("heavy");
+
+    const lightSelectedGadgets = getSelectedGadgets("light");
+    const mediumSelectedGadgets = getSelectedGadgets("medium");
+    const heavySelectedGadgets = getSelectedGadgets("heavy");
+
+    const lightSelectedSpecs = getSelectedSpecs("light");
+    const mediumSelectedSpecs = getSelectedSpecs("medium");
+    const heavySelectedSpecs = getSelectedSpecs("heavy");
 
     return [...players].map((player) => {
         const type = listOfClasses[Math.floor(Math.random() * listOfClasses.length)];
+
         const weaponList =
-        (type == "heavy" ? heavySelected :
-        type == "medium" ? mediumSelected :
-        lightSelected).sort(() => 0.5 - Math.random());
+        (type == "heavy" ? heavySelectedWeapons :
+        type == "medium" ? mediumSelectedWeapons :
+        lightSelectedWeapons).sort(() => 0.5 - Math.random());
+        
+        const gadgetList =
+        (type == "heavy" ? heavySelectedGadgets :
+        type == "medium" ? mediumSelectedGadgets :
+        lightSelectedGadgets).sort(() => 0.5 - Math.random());
+        
+        const specsList =
+        (type == "heavy" ? heavySelectedSpecs :
+        type == "medium" ? mediumSelectedSpecs :
+        lightSelectedSpecs).sort(() => 0.5 - Math.random());
 
         return {
             name: player,
             type,
-            weapon: weaponList[Math.floor(Math.random() * weaponList.length)]
+            weapon: weaponList[Math.floor(Math.random() * weaponList.length)],
+            spec: specsList[0],
+            gadgets: [gadgetList[0], gadgetList[1], gadgetList[2]]
         }
     })
 };
 
 export function loadoutCards (info) {
     const filler = [
-        (<div key="filler1" className="w-1/6 mx-auto filler" />),
-        (<div key="filler2"  className="w-1/6 mx-auto filler" />),
-        (<div key="filler3"  className="w-1/6 mx-auto filler" />),
-        (<div key="filler4"  className="w-1/6 mx-auto filler" />),
-        (<div key="filler5"  className="w-1/6 mx-auto filler" />),
-        (<div key="filler6"  className="w-1/6 mx-auto filler" />),
+        (<div key="filler1" className="w-5/12 mx-auto filler" />),
+        (<div key="filler2"  className="w-5/12 mx-auto filler" />),
+        (<div key="filler3"  className="w-5/12 mx-auto filler" />),
+        (<div key="filler4"  className="w-5/12 mx-auto filler" />),
+        (<div key="filler5"  className="w-5/12 mx-auto filler" />),
+        (<div key="filler6"  className="w-5/12 mx-auto filler" />),
     ];
 
-    return [...[...info].map(({ name, weapon, type }) => {
+    return [...[...info].map(({ name, weapon, type, spec, gadgets }) => {
         return (
             <div
             key={`${name}${weapon}`}
             id={`${name}${weapon}`}
-            className="w-1/6 mx-auto border-4 border-red-600 rounded-md"
+            className="w-5/12 mx-auto border-4 border-red-600 rounded-md"
             >
+
             <span
-              className="text-xl w-full bg-red-600 text-white block text-center text-nowrap"
-              >{name}</span>
+            className="text-xl w-full bg-red-600 text-white block text-nowrap px-2"
+            >{name}</span>
+
+            <hr className=""></hr>
+
+            <p
+            className="text-lg w-full bg-red-600 text-white block text-nowrap px-2"
+            >{`Class: ${type.charAt(0).toUpperCase()}${type.substring(1)}`}</p>
+
+            <div className="flex justify-between text-lg px-2 bg-red-600">
+                <span>{weapon.replace("_", " ")}</span>
+                <span>{spec.replace("_", " ")}</span>
+            </div>
+
+                <div className="flex">
                 <Image
                 height={300}
                 width={300}
                 src={`/${type}/${weapon}.png`}
+                className="w-1/2"
                 alt=""
-              />
-              <p
-              className="text-lg w-full bg-red-600 text-white block text-center text-nowrap"
-              >{`${type.charAt(0).toUpperCase()}${type.substring(1)}`}</p>
-              <p
-              className="w-full bg-red-600 text-white block text-center text-nowrap"
-              >{weapon.replace("_", " ")}</p>
+                />
+                <Image
+                height={300}
+                width={300}
+                src={`/${type}/specializations/${spec}.png`}
+                alt=""
+                className="w-1/2"
+                />
+                </div>
+
+            <div className="flex">
+                <Image
+                height={300}
+                width={300}
+                src={`/${type}/gadgets/${gadgets[0]}.png`}
+                alt=""
+                className="w-1/3"
+                />
+                <Image
+                height={300}
+                width={300}
+                src={`/${type}/gadgets/${gadgets[1]}.png`}
+                alt=""
+                className="w-1/3"
+                />
+                <Image
+                height={300}
+                width={300}
+                src={`/${type}/gadgets/${gadgets[2]}.png`}
+                alt=""
+                className="w-1/3"
+                />
+              </div>
+
+              <div
+              className="w-full bg-red-600 text-white text-sm text-nowrap flex justify-evenly"
+              >
+                <span>{gadgets[0].replace("_", " ")}</span>
+                <span>{gadgets[1].replace("_", " ")}</span>
+                <span>{gadgets[2].replace("_", " ")}</span>
+              </div>
+
             </div>
         )
     }), ...filler]
