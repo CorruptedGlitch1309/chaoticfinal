@@ -296,11 +296,11 @@ export function loadoutCards (info) {
               </div>
 
               <div
-              className="w-full bg-red-600 text-white text-sm text-nowrap flex justify-evenly"
+              className="w-full bg-red-600 text-white text-sm text-nowrap flex text-center"
               >
-                <span>{gadgets[0].replace("_", " ")}</span>
-                <span>{gadgets[1].replace("_", " ")}</span>
-                <span>{gadgets[2].replace("_", " ")}</span>
+                <span className="w-1/3">{gadgets[0].replace("_", " ")}</span>
+                <span className="w-1/3">{gadgets[1].replace("_", " ")}</span>
+                <span className="w-1/3">{gadgets[2].replace("_", " ")}</span>
               </div>
 
             </div>
