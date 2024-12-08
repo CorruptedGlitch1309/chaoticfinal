@@ -115,6 +115,12 @@ export function generateWeapons (weapons, gameClass, type) {
         const select = [ "weapon-selected" ];
         const unselect = [ "weapon-unselect" ];
         const isSelected = testFor(target, "weapon-selected");
+
+        if (
+            isSelected &&
+            document.getElementById(`${type}-container-${gameClass}`).querySelectorAll(".weapon-selected")
+            .length <= 1
+        ) return;
     
         (!isSelected ? select : unselect).forEach((text) => target.classList.add(text));
         (isSelected ? select : unselect).forEach((text) => target.classList.remove(text));
@@ -152,13 +158,17 @@ export function generateWeapons (weapons, gameClass, type) {
 
 export function randomizeLoadout () {
     const players = getSelected();
+    if (players.length == 0) {
+        alert("Select a player");
+        return [];
+    }
 
     function getClasses () {
         let array = [];
         gameClasses.forEach(
             (type) => document.getElementById(`${type}-checkbox`).checked ? array.unshift(type) : array
         );
-        return array;
+        return array.length == 0 ? gameClasses : array;
     };
 
     function getSelectedWeapons (type) {
@@ -296,7 +306,7 @@ export function loadoutCards (info) {
               </div>
 
               <div
-              className="w-full bg-red-600 text-white text-sm text-nowrap flex text-center"
+              className="w-full bg-red-600 text-white text-md text-nowrap flex text-center"
               >
                 <span className="w-1/3">{gadgets[0].replace("_", " ")}</span>
                 <span className="w-1/3">{gadgets[1].replace("_", " ")}</span>

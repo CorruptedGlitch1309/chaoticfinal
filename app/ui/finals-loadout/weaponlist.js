@@ -79,7 +79,7 @@ function getSpecs() {
                     "flex flex-wrap gap-1 gap-y-3 py-3",
                     { "hidden": !getToggle("weapon") }
                 )}>
-                    {generateWeapons(getWeapons(), gameClass, false)}
+                    {generateWeapons(getWeapons(), gameClass, "weapons")}
                     {filler}
                 </div>
 
