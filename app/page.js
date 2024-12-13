@@ -2,7 +2,7 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setSelectedParams, setLoaded } from "./lib/redux/hooks";
+import { setSelectedParams, setLoaded, setLoadoutParams, setType } from "./lib/redux/hooks";
 import Inputs from "./ui/player_randomizer/inputs";
 import PlayerContainer from "./ui/player_randomizer/playercontainer";
 
@@ -11,10 +11,15 @@ const dispatch = useDispatch();
 const searchParams = useSearchParams();
 
 const getSelectedParams = () => JSON.parse(searchParams.get("selected") ? searchParams.get("selected") : "[]");
+const getLoadoutParams = () => JSON.parse(searchParams.get("loadouts") ? searchParams.get("loadouts") : "[]");
+const getRandomizerParams = () => searchParams.get("randomizerType") ? searchParams.get("randomizerType") : "team-randomizer";
 
 React.useEffect(() => {
   dispatch(setLoaded());
   dispatch(setSelectedParams(getSelectedParams()));
+  console.log(getRandomizerParams());
+  dispatch(setType(getRandomizerParams()));
+  dispatch(setLoadoutParams(getLoadoutParams()));
 }, []);
 
   return (

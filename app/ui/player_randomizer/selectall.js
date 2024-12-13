@@ -1,10 +1,6 @@
-
-
 export default function SelectAll (props) {
     const select = [ "selected", "bg-gray-400" ];
     const unselect = [ "unselect", "bg-gray-600" ];
-
-
 
     const selectAll = (players) => players.forEach((name) => {
         const element = document.getElementById(name.toLowerCase().replace(" ", ""));
@@ -14,12 +10,8 @@ export default function SelectAll (props) {
         (!isSelected ? select : unselect).forEach((text) => element.classList.remove(text));
     });
 
-    
-
-    return (
-        <>
+    return <>
             <label htmlFor="select-all">Select All:</label>
             <input onChange={() => selectAll(props.players)} className="w-4 h-4 mr-2" id="select-all" type="checkbox" name="select-all" />
         </>
-    );
 };

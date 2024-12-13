@@ -1,9 +1,6 @@
 import Image from "next/image";
-import CreatePlayer from "../ui/player_randomizer/createplayer";
-import TeamControls from "../ui/player_randomizer/teamcontrols";
 import FinalsControls from "../ui/finals-loadout/finalscontrols";
-import { useDispatch } from "react-redux";
-import { setNewPlayers } from "./redux/hooks";
+import TeamNumberSelector from "../ui/player_randomizer/teamnumber";
 
 function setStorage(array) {
   if (typeof window !== 'undefined') {
@@ -46,7 +43,7 @@ export function createPlayer (button, players, newPlayers, key) {
     }
 };
 
-export const getSelected = (players) => [...document.querySelectorAll(".selected")].map((element) => element.lastChild.textContent);
+export const getSelected = () => [...document.querySelectorAll(".selected")].map((element) => element.lastChild.textContent);
 
 export function randomizeTeams (players, teamNumber) {
   const randomized = players.sort(() => 0.5 - Math.random());
@@ -100,20 +97,17 @@ export const generatePlayers = (players, array, input) => {
       onClick={(e) => select(e.target)}
       >{html(name)}</button>
     )
-    : (
-      <div
-      className="flex bg-gray-600 w-56 rounded-full player-button unselect"
-      key={id}
-      >{html(name)}</div>
-    );
+    : ( <div className="flex bg-gray-600 w-56 rounded-full player-button unselect" key={id} >{html(name)}</div> );
   });
 };
 
-export function playerRoute(players, teamNumber, searchParams) {
+export function route (players, loadouts, type, searchParams) {
   const params = new URLSearchParams(searchParams.toString);
-  params.set("selected", JSON.stringify(players));
+  if (players[0].length > 0) params.set("selected", JSON.stringify(players));
+  if (loadouts.length > 0) params.set("loadouts", JSON.stringify(loadouts));
+  params.set("randomizerType", type);
   return params.toString();
-};
+}
 
 export function addTeamName (team, index) {
   team.unshift( team.length > 0 ? <h2 className="text-2xl w-full" key={"team-name" + index}>Team {index + 1}</h2> : "" );
@@ -123,15 +117,11 @@ export function addTeamName (team, index) {
 export function createBlankPlayer (newPlayers) {
   const key = new Date().getTime().toString()
   return [...newPlayers, key]
-}
+};
 
 export function generateControls (state) {
   switch (state) {
-    case "team-randomizer":
-      return (<TeamControls />);
-      break;
-    case "finals-loadout":
-      return (<FinalsControls />);
-      break;
+    case "team-randomizer": return (<TeamNumberSelector />);
+    case "finals-loadout": return (<FinalsControls />);
   }
-}
+};

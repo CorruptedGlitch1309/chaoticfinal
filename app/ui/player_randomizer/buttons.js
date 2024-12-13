@@ -1,8 +1,5 @@
-
-
 export default function Buttons (props) {
-    return (
-        <>
+    return <>
             <button
                 className="bg-red-600 p-0.5 mr-2 rounded"
                 onClick={props.randomAction}
@@ -16,5 +13,4 @@ export default function Buttons (props) {
                 onClick={props.createAction}
                 >Add Player</button>
         </>
-    )
 }

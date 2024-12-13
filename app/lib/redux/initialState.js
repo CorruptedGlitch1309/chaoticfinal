@@ -4,6 +4,7 @@ export const initialState = {
     players: getStorage() || [],
     newPlayers: getStorage().length == 0 ? createBlankPlayer([]) : [],
     selectedParams: [],
+    loadoutParams: [],
     loadouts: [],
     randomizerType: "team-randomizer",
     toggles: {

@@ -156,75 +156,37 @@ export function generateWeapons (weapons, gameClass, type) {
     ))
 };
 
-export function randomizeLoadout () {
+export function randomizeLoadout (shouldAlert) {
     const players = getSelected();
     if (players.length == 0) {
-        alert("Select a player");
+        if (shouldAlert) alert("Select a player");
         return [];
     }
 
     function getClasses () {
-        let array = [];
-        gameClasses.forEach(
-            (type) => document.getElementById(`${type}-checkbox`).checked ? array.unshift(type) : array
-        );
-        return array.length == 0 ? gameClasses : array;
+        let array = gameClasses.filter((type) => document.getElementById(`${type}-checkbox`).checked);
+        return array.length ? array : gameClasses;
     };
 
-    function getSelectedWeapons (type) {
-        return [...document.getElementById(`weapons-container-${type}`).children].map(
-            (element) => element.classList.value.includes("weapon-selected") ? element.id : false
-        ).filter((item) => item)
-    };
-
-    function getSelectedGadgets (type) {
-        return [...document.getElementById(`gadgets-container-${type}`).children].map(
-            (element) => element.classList.value.includes("weapon-selected") ? element.id : false
-        ).filter((item) => item)
-    };
-
-    function getSelectedSpecs (type) {
-        return [...document.getElementById(`specs-container-${type}`).children].map(
+    function getSelectedGear (classType, gearType) {
+        return [...document.getElementById(`${gearType}-container-${classType}`).children].map(
             (element) => element.classList.value.includes("weapon-selected") ? element.id : false
         ).filter((item) => item)
     };
 
     const listOfClasses = getClasses();
 
-    const lightSelectedWeapons = getSelectedWeapons("light");
-    const mediumSelectedWeapons = getSelectedWeapons("medium");
-    const heavySelectedWeapons = getSelectedWeapons("heavy");
-
-    const lightSelectedGadgets = getSelectedGadgets("light");
-    const mediumSelectedGadgets = getSelectedGadgets("medium");
-    const heavySelectedGadgets = getSelectedGadgets("heavy");
-
-    const lightSelectedSpecs = getSelectedSpecs("light");
-    const mediumSelectedSpecs = getSelectedSpecs("medium");
-    const heavySelectedSpecs = getSelectedSpecs("heavy");
-
     return [...players].map((player) => {
         const type = listOfClasses[Math.floor(Math.random() * listOfClasses.length)];
 
-        const weaponList =
-        (type == "heavy" ? heavySelectedWeapons :
-        type == "medium" ? mediumSelectedWeapons :
-        lightSelectedWeapons).sort(() => 0.5 - Math.random());
-        
-        const gadgetList =
-        (type == "heavy" ? heavySelectedGadgets :
-        type == "medium" ? mediumSelectedGadgets :
-        lightSelectedGadgets).sort(() => 0.5 - Math.random());
-        
-        const specsList =
-        (type == "heavy" ? heavySelectedSpecs :
-        type == "medium" ? mediumSelectedSpecs :
-        lightSelectedSpecs).sort(() => 0.5 - Math.random());
+        const weaponList = getSelectedGear(type, "weapon").sort(() => 0.5 - Math.random());
+        const gadgetList = getSelectedGear(type, "gadgets").sort(() => 0.5 - Math.random());
+        const specsList = getSelectedGear(type, "specs").sort(() => 0.5 - Math.random());
 
         return {
             name: player,
             type,
-            weapon: weaponList[Math.floor(Math.random() * weaponList.length)],
+            weapon: weaponList[0],
             spec: specsList[0],
             gadgets: [gadgetList[0], gadgetList[1], gadgetList[2]]
         }

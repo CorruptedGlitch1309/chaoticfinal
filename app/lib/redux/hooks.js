@@ -1,4 +1,4 @@
-import { SETPLAYERS, SETNEWPLAYERS, SETSELECTEDPARAMS, SETLOADED, SETTYPE, TOGGLECLASS, SETLOADOUTS } from "./delarations";
+import { SETPLAYERS, SETNEWPLAYERS, SETSELECTEDPARAMS, SETLOADED, SETTYPE, TOGGLECLASS, SETLOADOUTS, SETLOADOUTPARAMS } from "./delarations";
 
 
 export function setPlayers (payload) {
@@ -18,6 +18,13 @@ export function setNewPlayers (payload) {
 export function setSelectedParams (payload) {
     return {
         type: SETSELECTEDPARAMS,
+        payload
+    };
+};
+
+export function setLoadoutParams (payload) {
+    return {
+        type: SETLOADOUTPARAMS,
         payload
     };
 };

@@ -1,5 +1,5 @@
 import { initialState } from "./initialState";
-import { SETPLAYERS, SETNEWPLAYERS, SETSELECTEDPARAMS, SETLOADED, SETTYPE, TOGGLECLASS, SETLOADOUTS } from "./delarations";
+import { SETPLAYERS, SETNEWPLAYERS, SETSELECTEDPARAMS, SETLOADED, SETTYPE, TOGGLECLASS, SETLOADOUTS, SETLOADOUTPARAMS } from "./delarations";
 
 function weaponOrGadget(type, sub, value) {
     if (type == "light" && sub == "weapon") return { lightWeaponsToggle: !value };
@@ -15,21 +15,12 @@ function weaponOrGadget(type, sub, value) {
 
 export default function reducer (state = initialState, action) {
     switch (action.type) {
-        case SETPLAYERS:
-            return Object.assign({}, state, { players: action.payload });
-            break;
-        case SETNEWPLAYERS:
-            return Object.assign({}, state, { newPlayers: action.payload });
-            break;
-        case SETSELECTEDPARAMS:
-            return Object.assign({}, state, { selectedParams: action.payload });
-            break;
-        case SETLOADED:
-            return Object.assign({}, state, { loaded: true });
-            break;
-        case SETTYPE:
-            return Object.assign({}, state, { randomizerType: action.payload });
-            break;
+        case SETPLAYERS: return Object.assign({}, state, { players: action.payload });
+        case SETNEWPLAYERS: return Object.assign({}, state, { newPlayers: action.payload });
+        case SETSELECTEDPARAMS: return Object.assign({}, state, { selectedParams: action.payload });
+        case SETLOADOUTPARAMS: return Object.assign({}, state, { loadoutParams: action.payload })
+        case SETLOADED: return Object.assign({}, state, { loaded: true });
+        case SETTYPE: return Object.assign({}, state, { randomizerType: action.payload });
         case TOGGLECLASS:
             return Object.assign({}, state, { toggles: Object.assign(
                 {}, state.toggles, weaponOrGadget(action.value, action.sub, action.payload)

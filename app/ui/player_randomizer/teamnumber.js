@@ -1,7 +1,4 @@
-
-
 export default function TeamNumberSelector () {
-
     return (
         <div className="text-xl text-center">
             <label htmlFor="teamQuantity">Teams:</label>
