@@ -2,7 +2,7 @@ import { getStorage, createBlankPlayer } from "../actions";
 
 export const initialState = {
     players: getStorage() || [],
-    newPlayers: getStorage() ? getStorage().length == 0 ? createBlankPlayer([]) : getStorage() : [],
+    newPlayers: !getStorage() ? [] : (getStorage().length == 0 ? createBlankPlayer([]) : []),
     selectedParams: [ [] ],
     loadoutParams: [],
     loadouts: [],
