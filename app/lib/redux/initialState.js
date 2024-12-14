@@ -2,8 +2,8 @@ import { getStorage, createBlankPlayer } from "../actions";
 
 export const initialState = {
     players: getStorage() || [],
-    newPlayers: getStorage().length == 0 ? createBlankPlayer([]) : [],
-    selectedParams: [],
+    newPlayers: getStorage() ? getStorage().length == 0 ? createBlankPlayer([]) : getStorage() : [],
+    selectedParams: [ [] ],
     loadoutParams: [],
     loadouts: [],
     randomizerType: "team-randomizer",

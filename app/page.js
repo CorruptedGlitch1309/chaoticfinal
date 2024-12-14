@@ -10,14 +10,13 @@ export default function page() {
 const dispatch = useDispatch();
 const searchParams = useSearchParams();
 
-const getSelectedParams = () => JSON.parse(searchParams.get("selected") ? searchParams.get("selected") : "[]");
+const getSelectedParams = () => JSON.parse(searchParams.get("selected") ? searchParams.get("selected") : "[[]]");
 const getLoadoutParams = () => JSON.parse(searchParams.get("loadouts") ? searchParams.get("loadouts") : "[]");
 const getRandomizerParams = () => searchParams.get("randomizerType") ? searchParams.get("randomizerType") : "team-randomizer";
 
 React.useEffect(() => {
   dispatch(setLoaded());
   dispatch(setSelectedParams(getSelectedParams()));
-  console.log(getRandomizerParams());
   dispatch(setType(getRandomizerParams()));
   dispatch(setLoadoutParams(getLoadoutParams()));
 }, []);
