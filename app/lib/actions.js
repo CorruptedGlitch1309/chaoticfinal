@@ -26,8 +26,7 @@ export function deleteSelected(players) {
 };
 
 export function createPlayer (button, players, newPlayers, key) {
-  const input = button.parentElement.querySelector(".create-player");
-  const name = input.value;
+  const name = button.parentElement.querySelector(".create-player").value;
     if (name == "") {
       alert("Please enter a name.");
       return { stateNewPlayers: newPlayers, statePlayers: players};

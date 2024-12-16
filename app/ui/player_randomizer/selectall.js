@@ -11,7 +11,7 @@ export default function SelectAll (props) {
     });
 
     return <>
-            <label htmlFor="select-all">Select All:</label>
+            <label htmlFor="select-all">Toggle All:</label>
             <input onChange={() => selectAll(props.players)} className="w-4 h-4 mr-2" id="select-all" type="checkbox" name="select-all" />
         </>
 };

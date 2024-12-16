@@ -11,26 +11,24 @@ function weaponOrGadget(type, sub, value) {
     if (type == "heavy" && sub == "weapon") return { heavyWeaponsToggle: !value };
     if (type == "heavy" && sub == "gadgets") return { heavyGadgetsToggle: !value };
     if (type == "heavy" && sub == "specs") return { heavySpecToggle: !value };
-}
+};
+
+const  newState = (state, newState) => Object.assign({}, state, newState);
 
 export default function reducer (state = initialState, action) {
     switch (action.type) {
-        case SETPLAYERS: return Object.assign({}, state, { players: action.payload });
-        case SETNEWPLAYERS: return Object.assign({}, state, { newPlayers: action.payload });
-        case SETSELECTEDPARAMS: return Object.assign({}, state, { selectedParams: action.payload });
-        case SETLOADOUTPARAMS: return Object.assign({}, state, { loadoutParams: action.payload })
-        case SETLOADED: return Object.assign({}, state, { loaded: true });
-        case SETTYPE: return Object.assign({}, state, { randomizerType: action.payload });
+        case SETPLAYERS: return newState(state, { players: action.payload });
+        case SETNEWPLAYERS: return newState(state, { newPlayers: action.payload });
+        case SETSELECTEDPARAMS: return newState(state, { selectedParams: action.payload });
+        case SETLOADOUTPARAMS: return newState(state, { loadoutParams: action.payload });
+        case SETLOADED: return newState(state, { loaded: true });
+        case SETTYPE: return newState(state, { randomizerType: action.payload });
         case TOGGLECLASS:
-            return Object.assign({}, state, { toggles: Object.assign(
-                {}, state.toggles, weaponOrGadget(action.value, action.sub, action.payload)
-            ) }
-            );
-            break;
+            return newState(state, { 
+                toggles: newState(state.toggles, weaponOrGadget(action.value, action.sub, action.payload)) 
+        });
         case SETLOADOUTS:
             return Object.assign({}, state, { loadouts: action.payload })
-        default:
-            return state;
-            break;
+        default: return state;
     }
 };

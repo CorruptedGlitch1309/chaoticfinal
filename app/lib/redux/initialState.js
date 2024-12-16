@@ -1,8 +1,13 @@
 import { getStorage, createBlankPlayer } from "../actions";
 
+function checkStorage () {
+    if (!getStorage() || getStorage().length == 0) return createBlankPlayer([]);
+    return [];
+}
+
 export const initialState = {
     players: getStorage() || [],
-    newPlayers: !getStorage() ? createBlankPlayer([]) : (getStorage().length == 0 ? createBlankPlayer([]) : []),
+    newPlayers: checkStorage(),
     selectedParams: [ [] ],
     loadoutParams: [],
     loadouts: [],

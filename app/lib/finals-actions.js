@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getSelected } from "./actions";
 
-const gameClasses = [
+export const gameClasses = [
     "light",
     "medium",
     "heavy"
@@ -38,6 +38,7 @@ export const lightGadgets = [
     "Thermal_Vision",
     "Tracking_Dart",
     "Vanishing_Bomb",
+    "Gravity_Vortex",
     ...universalGadgets
 ];
 
@@ -57,6 +58,7 @@ export const mediumWeapons = [
     "Pike-556",
     "R.357",
     "Riot_Shield",
+    "Cerberus_12GA"
 ];
 
 export const mediumGadgets = [
@@ -66,7 +68,9 @@ export const mediumGadgets = [
     "Gas_Mine",
     "Glitch_Trap",
     "Jump_Pad",
+    "Motion_Sensor",
     "Zipline",
+    "Smoke_Grenade",
     ...universalGadgets
 ];
 
@@ -86,6 +90,7 @@ export const heavyWeapons = [
     "SA1216",
     "Sledgehammer",
     "Spear",
+    "SHAK-50"
 ];
 
 export const heavyGadgets = [
@@ -97,6 +102,8 @@ export const heavyGadgets = [
     "Motion_Sensor",
     "Pyro_Mine",
     "RPG-7",
+    "Lockbolt_Launcher",
+    "Smoke_Grenade",
     ...universalGadgets
 ];
 
