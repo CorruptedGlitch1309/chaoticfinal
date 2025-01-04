@@ -38,7 +38,9 @@ export default function FinalsControls () {
 
                         </div>
 
-                        <hr className="mx-4" />
+                        {/*
+                            WIP NEEDS WORK
+                         <hr className="mx-4" />
 
                         <div className="flex px-3">
 
@@ -58,7 +60,8 @@ export default function FinalsControls () {
                             onChange={() => runToggle("specs")} />
                             </span>
 
-                            </div>
+                        </div> */}
+ 
                     </div>
             </div>
 
