@@ -41,8 +41,9 @@ React.useEffect(() => {
         <dialog className="bg-gray-200 min-w-1/2 max-w-screen-sm mx-auto rounded-b-lg rounded-t-xl text-black border border-black" open={guideOpen}>
           <h3 className="text-center text-xl w-full bg-gray-400 rounded-t-lg">Guide</h3>
           <div className="px-2 py-4">
+            <p className="indent-3">Welcome to chaotic final! Here is a short guide on how to use the randomizer.</p>
             <p
-            className="indent-3"
+            className="indent-3 mt-4"
             >To use the randomizer, first create a list of players using the "Add Player" button. Once you've created your list, click on a player to select them. Choose between team or loadout randomizer, modify the settings, and click randomize!</p>
             <p className="indent-3 mt-4">"Toggle All" can be used to quickly select and deselect players.</p>
             <p className="indent-3 mt-4">Loadouts and teams can be shared and saved by copying the link.</p>
